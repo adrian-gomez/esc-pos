@@ -1,0 +1,6 @@
+*.log
+*.gem
+coverage/
+spec/reports/
+
+Gemfile.lock
