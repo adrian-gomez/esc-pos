@@ -14,7 +14,7 @@ module ESC_POS
       end
 
       def initialize
-        raise NoMethodError, 'This is just a base class, use it to create your own custom specifications.'
+        raise NoMethodError, 'This is just a base class, use it to create custom specifications.'
       end
 
       def text(txt, options = {})
@@ -39,7 +39,7 @@ module ESC_POS
       end
 
       def render(options = {})
-        template_filename = options.fetch(:template, self.class.to_s.gsub(/Report/, '').underscore)
+        template_filename = options.fetch(:template, self.class.to_s.underscore)
 
         template = File.read(File.join(Settings.templates_path, "#{template_filename}.esc_pos.erb"))
         erb = ERB.new(template, 0)
@@ -62,7 +62,11 @@ module ESC_POS
         text(char * get_value(:width), :font_size => :font_normal)
       end
 
-      def end_page(spaces_after = 0)
+      def got_to_cut
+        feed_lines(get_value(:lines_to_cut_line))
+      end
+
+      def got_to_cut_and_cut(spaces_after = 0)
         "#{get_value(:gs_code)}V#{65.chr}#{spaces_after}\r"
       end
 
