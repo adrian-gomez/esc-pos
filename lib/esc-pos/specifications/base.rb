@@ -62,11 +62,11 @@ module ESC_POS
         text(char * get_value(:width), :font_size => :font_normal)
       end
 
-      def got_to_cut
+      def go_to_cut
         feed_lines(get_value(:lines_to_cut_line))
       end
 
-      def got_to_cut_and_cut(spaces_after = 0)
+      def go_to_cut_and_cut(spaces_after = 0)
         "#{get_value(:gs_code)}V#{65.chr}#{spaces_after}\r"
       end
 
