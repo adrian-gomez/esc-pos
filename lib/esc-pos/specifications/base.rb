@@ -42,7 +42,7 @@ module ESC_POS
         template_filename = options.fetch(:template, self.class.to_s.underscore)
 
         template = File.read(File.join(Settings.templates_path, "#{template_filename}.esc_pos.erb"))
-        erb = ERB.new(template, 0)
+        erb = ERB.new(template, 0, '%<>-')
         erb.result(binding)
       end
 
