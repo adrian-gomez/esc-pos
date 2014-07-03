@@ -18,18 +18,25 @@ module ESC_POS
       end
 
       def text(txt, options = {})
-        font_size = options.fetch(:font_size, :font_normal)
-        font_color = options.fetch(:font_color, :color_black)
+        font = options.fetch(:font, :font_b)
+        color = options.fetch(:color, :color_black)
 
         formatted_text = ''
-        formatted_text << set_font_size(font_size)
+        formatted_text << set_font(font)
         formatted_text << set_alignment(options[:align_type]) if options[:align_type]
-        formatted_text << set_font_color(font_color)
-        formatted_text << txt if txt
+        formatted_text << set_color(color)
+
+        if txt && get_value(:special_encoding)
+          formatted_text << txt.encode(get_value(:special_encoding))
+        elsif txt
+          formatted_text << txt
+        end
+
+        formatted_text
       end
 
       def reset_printer
-        "#{get_value(:esc_code)}@"
+        "#{get_value(:esc_code)}#{get_value(:reset_printer_code)}"
       end
 
       def feed_lines(lines)
@@ -46,20 +53,28 @@ module ESC_POS
         erb.result(binding)
       end
 
-      def set_font_size(size)
-        "#{get_value(:esc_code)}M#{get_value(size)}"
+      def set_font(font)
+        "#{get_value(:esc_code)}#{get_value(:font_selector_code)}#{get_value(font)}"
       end
 
       def set_alignment(alignment)
-        "#{get_value(:esc_code)}a#{get_value(alignment)}"
+        "#{get_value(:esc_code)}#{get_value(:alignment_selector_code)}#{get_value(alignment)}"
       end
 
-      def set_font_color(color)
-        "#{get_value(:esc_code)}r#{get_value(color)}"
+      def set_color(color)
+        "#{get_value(:esc_code)}#{get_value(:color_selector_code)}#{get_value(color)}"
+      end
+
+      def set_international_character_set(character_set)
+        "#{get_value(:esc_code)}#{get_value(:international_character_selector_code)}#{get_value(character_set).chr}"
+      end
+
+      def set_character_code_table(character_code)
+        "#{get_value(:esc_code)}#{get_value(:character_table_selector_code)}#{get_value(character_code).chr}"
       end
 
       def split_line(char = '-')
-        text(char * get_value(:width), :font_size => :font_normal)
+        text(char * get_value(:width), :font => :font_b)
       end
 
       def go_to_cut

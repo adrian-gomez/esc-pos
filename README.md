@@ -19,6 +19,24 @@ specification.render(template: 'payment_ticket')
 Templates
 ==============
 
+Encoding
+==============
+All the specifications that inherit from ESC_POS::Specifications::Epson use cp437 to encode the text
+you can change this:
+```ruby
+class PrinterTestPage < ESC_POS::Specifications::Epson::TM_U220
+  set :special_encoding, 'utf-8'
+end
+```
+or disable re-encoding:
+```ruby
+class PrinterTestPage < ESC_POS::Specifications::Epson::TM_U220
+  set :special_encoding, nil
+end
+```
+
+Note: usage of this encoding was needed to print spanish character, ex: á, ñ, etc.
+
 Contributing
 ==============
 

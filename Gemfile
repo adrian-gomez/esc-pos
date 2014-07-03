@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in angus-remote.gemspec
+# Specify your gem's dependencies in esc-pos.gemspec
 gemspec
