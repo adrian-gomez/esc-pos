@@ -2,7 +2,6 @@ require 'erb'
 
 module ESC_POS
   module Specifications
-
     class Base
 
       def self.specifications
@@ -26,10 +25,8 @@ module ESC_POS
         formatted_text << set_alignment(options[:align_type]) if options[:align_type]
         formatted_text << set_color(color)
 
-        if txt && get_value(:special_encoding)
-          formatted_text << txt.encode(get_value(:special_encoding))
-        elsif txt
-          formatted_text << txt
+        if txt
+          formatted_text << re_encode_text(txt)
         end
 
         formatted_text
@@ -97,7 +94,14 @@ module ESC_POS
         self.class.specifications[key]
       end
 
-    end
+      def re_encode_text(txt)
+        return txt unless get_value(:special_encoding)
 
+        txt.encode(get_value(:special_encoding))
+      rescue Encoding::UndefinedConversionError
+        txt
+      end
+
+    end
   end
 end
