@@ -99,7 +99,7 @@ module ESC_POS
 
         txt.encode(get_value(:special_encoding))
       rescue Encoding::UndefinedConversionError
-        txt
+        txt.force_encoding(get_value(:special_encoding))
       end
 
     end
