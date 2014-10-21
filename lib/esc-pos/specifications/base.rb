@@ -17,13 +17,13 @@ module ESC_POS
       end
 
       def text(txt, options = {})
-        font = options.fetch(:font, :font_b)
-        color = options.fetch(:color, :color_black)
+        font = options.fetch(:font, nil)
+        color = options.fetch(:color, nil)
 
         formatted_text = ''
-        formatted_text << set_font(font)
+        formatted_text << set_font(font) if font
         formatted_text << set_alignment(options[:align_type]) if options[:align_type]
-        formatted_text << set_color(color)
+        formatted_text << set_color(color) if color
 
         if txt
           formatted_text << re_encode_text(txt)
@@ -70,8 +70,8 @@ module ESC_POS
         "#{get_value(:esc_code)}#{get_value(:character_table_selector_code)}#{get_value(character_code).chr}"
       end
 
-      def split_line(char = '-')
-        text(char * get_value(:width), :font => :font_b)
+      def split_line(char = '-', font = nil)
+        text(char * get_value(:width), :font => font)
       end
 
       def go_to_cut
